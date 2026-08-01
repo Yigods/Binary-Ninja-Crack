@@ -6,7 +6,7 @@
 - `scripts/`：本地 patch 与发布辅助脚本。
 - [Releases](https://github.com/Yigods/Binary-Ninja-Crack/releases)：提供对应版本的 macOS `.dmg` 安装包与 SHA-256 校验文件。
 
-在线许可证生成器位于 <https://binary-ninja-keygen.vercel.app>；签发服务与私钥配置在私有仓库 `Yigods/binary-ninja-keygen` 中维护。
+在线许可证生成器位于 <https://binary-ninja-keygen.vercel.app>；
 
 ## 版本边界
 
