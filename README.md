@@ -14,10 +14,7 @@ The patch validates the original arm64 embedded-public-key SHA-256 before modify
 
 ## 在线生成与本地 patch
 
-1. 在 [在线生成器](https://binary-ninja-keygen-web.vercel.app/) 自定义并下载 `license.dat`：
-   - **Email**：许可证显示的所属邮箱；进入签名主体。
-   - **Serial**：32 位十六进制许可证唯一标识；进入签名主体，并会被运行时用于序列号识别/黑名单比较。
-   - **Count**：许可证数量/席位字段；程序会读取与显示，且进入签名主体。
+1. 在 [在线生成器](https://binary-ninja-keygen-web.vercel.app/) 只填写邮箱并下载 `license.dat`。服务端会随机生成 32 位十六进制 Serial，并将 Count 固定为 `100`；这两个字段同样进入签名，下载后不可修改。
 2. 在本机完全退出 Binary Ninja 后执行：
 
    ```zsh
