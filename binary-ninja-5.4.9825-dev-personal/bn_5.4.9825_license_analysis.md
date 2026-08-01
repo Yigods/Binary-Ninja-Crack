@@ -2,11 +2,11 @@
 
 ## 结果
 
-- 已审计 `/Applications/Binary Ninja.app` 的 `5.4.9825-dev_personal` 构建；其核心为 `libbinaryninjacore.1.dylib`（arm64/x86_64）。
+- 审计 `/Applications/Binary Ninja.app` 的 `5.4.9825-dev_personal` 构建；其核心为 `libbinaryninjacore.1.dylib`（arm64/x86_64）。
 - 该构建的付费许可证不是可从公开信息直接计算的序列号：它对许可证主体执行 **RSA-2048 + PKCS#1 v1.5 / SHA-256** 签名校验（Botan 标记：`EMSA3(SHA-256)`）。
 - 因此，**没有 Vector 35 私钥就不能为原始二进制制作新许可证**。提取出的只有公钥，不能用于生成签名。
-- 已实现针对该 exact arm64 构建的“重置内置公钥”补丁：`bn_5_4_9825_rekey.py` 只修改拷贝中的 73 组 `MOVZ/MOVK` 常量，使其接受你自行生成的 RSA-2048 公钥；原安装目录不会被脚本写入。
-- 已按你给出的旧版脚本和 [DirWang 的 5.1 分析](https://www.cnblogs.com/DirWang/p/19016924) 还原并验证 `data` 的额外格式校验：前 `0x100` 字节为随机值，后 `0x18` 字节为使用 `MD5(prefix)` 作 key 的 RC4 密文；明文固定为 `9c2aaa09a4e2252b0ba125db1e1cd272207d97cca8446899`。
+- 实现针对该 exact arm64 构建的“重置内置公钥”补丁：`bn_5_4_9825_rekey.py` 只修改拷贝中的 73 组 `MOVZ/MOVK` 常量，使其接受你自行生成的 RSA-2048 公钥；原安装目录不会被脚本写入。
+- 还原并验证 `data` 的额外格式校验：前 `0x100` 字节为随机值，后 `0x18` 字节为使用 `MD5(prefix)` 作 key 的 RC4 密文；明文固定为 `9c2aaa09a4e2252b0ba125db1e1cd272207d97cca8446899`。
 - 该版本另有一个独立问题：`expiresEpoch` 被读取并写入运行时到期时间，但未加入签名主体。对已有且签名有效的许可证，仅改该字段不会改变 RSA 校验输入。随附审计器可离线验证这个结论；它不会改动已安装程序或默认许可证路径。
 
 ## 已复现验证
@@ -15,7 +15,7 @@
 
 | core 拷贝 | 输入 | `BNInitUI(0xf20f858c86312a9e)` | `BNIsLicenseValidated()` |
 |---|---|---:|---:|
-| 重置为你提供旧脚本的公钥 | 你提供的 `license.dat` | `true` | `true` |
+| 重置公钥 |  `license.dat` | `true` | `true` |
 | 重置为新生成测试公钥 | 本脚本生成的单元素数组许可证 | `true` | `true` |
 | 同上 | 仅篡改 `email`，不重签名 | `false` | `false` |
 
