@@ -1,0 +1,6 @@
+*.pem
+*.der
+license.dat
+*.dylib
+*.app/
+__pycache__/
